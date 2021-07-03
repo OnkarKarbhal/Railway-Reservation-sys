@@ -8,6 +8,21 @@ const cookieParser = require('cookie-parser');
 router.use(express.json());
 router.use(cookieParser());
 
+/**
+ * @swagger
+ * /book-ticket:
+ *   post:
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object                      
+ *     responses:
+ *       200:
+ *         description: Returns the requested user
+ * 
+*/
+
 router.post('/book-ticket', authMiddle , (req, res)=>{
     console.log(req.body);
 
