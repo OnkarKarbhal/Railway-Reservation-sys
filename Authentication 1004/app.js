@@ -30,3 +30,5 @@ app.use('/auth',authRoutes);
 app.listen(1004, ()=>{
     console.log('Server ' + 1004 + " listening");
 });
+
+module.exports = app;

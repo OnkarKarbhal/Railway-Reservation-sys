@@ -49,12 +49,13 @@ router.post("/register", async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   const emailExist = await User.findOne({ email: req.body.email });
-  console.log(emailExist);
+  //console.log(emailExist);
   if (emailExist)
     return res.status(400).json({ message: "Email already exist!" });
 
   User.create(req.body).then((newdata) => {
-      res.send({ newdata });
+    console.log(newdata) 
+    res.send( newdata );
     }).catch((err) => {
       console.log(err);
     });
@@ -95,6 +96,7 @@ router.post("/login", async (req, res) => {
   const emailExist = await User.findOne({ email: req.body.email });
   if (!emailExist) return res.status(400).send({ message: " Email does not exist!" });
   //res.json({ userid: emailExist._id });
+  console.log(emailExist)
 
   //Create token and auth
   const token = createToken(User._id)

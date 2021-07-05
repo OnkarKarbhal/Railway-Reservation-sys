@@ -44,7 +44,7 @@ router.post('/book-ticket', authMiddle , (req, res)=>{
         })    
 })
 
-router.post('/', (req, res)=>{
+router.post('/billing', (req, res)=>{
     axios.post("http://localhost:1006/payment", req.body)
     .then((response)=>{
     console.log(response.data)
