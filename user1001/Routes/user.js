@@ -6,7 +6,7 @@ var UserSchema = require("../Model/UserSchema");
 //var TrainSchema = require("../../admin1000/Model/TrainSchema");
 router.use(express.json());
 
-var trainDBURI = "mongodb+srv://OnkarK:731998@cluster0.09ywx.mongodb.net/AuthenticationDB?retryWrites=true&w=majority";
+var trainDBURI = "mongodb+srv://OnkarK:731998@cluster0.09ywx.mongodb.net/AuthDB?retryWrites=true&w=majority";
 mongoose.connect(trainDBURI, {
   useNewUrlParser: true,
   useFindAndModify: false,
@@ -15,21 +15,21 @@ mongoose.connect(trainDBURI, {
 });
 console.log("TrainDB connected");
 
-// /**
-//  *  @swagger
-//  *  /{id}:
-//  *  get:
-//  *      summary: "To get the list of all trains"
-//  *      parameters:
-//  *            - in: path
-//  *              name: id
-//  *              schema:
-//  *                  type: string
-//  *              required: true
-//  *      responses:
-//  *          '200':
-//  *              description: A successful response
-//  */
+/**
+ *  @swagger
+ *  /{id}:
+ *  get:
+ *      summary: "To get the list of all trains"
+ *      parameters:
+ *            - in: path
+ *              name: id
+ *              schema:
+ *                  type: string
+ *              required: true
+ *      responses:
+ *          '200':
+ *              description: A successful response
+ */
 
 //GET Train List By ID
 router.get("/:id", (req, res) => {

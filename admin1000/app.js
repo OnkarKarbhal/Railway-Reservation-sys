@@ -17,9 +17,9 @@ const swaggerOptions = {
         openapi: '3.0.0',
     info: {
     title: 'Online Railway Reservation',
-    description: 'Railway Reservation info',
+    description: 'Online booking of railway tickets',
     contact: {
-    name: 'OnkarK'
+    name: 'By: OnkarK'
     },
     servers: ["http://localhost:1000"]
     }

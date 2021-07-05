@@ -1,9 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var bookticket = require('../Model/ticketSchema');
+var payment = require('../../Payment/payment');
 var authMiddle = require('../../Middleware/authmiddleware');
 //var cookie = require('cookie-parser');
 const cookieParser = require('cookie-parser');
+const axios = require('axios')
 
 router.use(express.json());
 router.use(cookieParser());
@@ -24,6 +26,7 @@ router.use(cookieParser());
 */
 
 router.post('/book-ticket', authMiddle , (req, res)=>{
+    
     console.log(req.body);
 
     const book_ticket = new bookticket({
@@ -40,10 +43,39 @@ router.post('/book-ticket', authMiddle , (req, res)=>{
             res.status(400).json({ message: "Booking not successfull"});
         })    
 })
+
+router.post('/', (req, res)=>{
+    axios.post("http://localhost:1006/payment", req.body)
+    .then((response)=>{
+    console.log(response.data)
+    res.send(response.data);
+}).catch((error)=>{
+    console.log(error)});
+})
+
+
+
+
+
+//     axios.post("http://localhost:1006/payment", req.body).then((response) => {
+//         console.log(response.data);
+//         var payment = response.data;
+//         res.send(payment);
+//     }).catch((err) => {
+//         console.log(err.message);
+//     })
+// })
+
+// axios.get("http://localhost:1000/admin/" + req.paramas.id).then((response) => {
+//       res.send(response.data);
+//     }).catch((err) => {
+//       if (err) {
+//         throw err;
+//       }
+//     });
+
     
-    //const SeatsQuantity = parseInt(req.body.quantity);
-    //const date = parseInt(req.body.quantity);
-    //const booking_id = Math.random().toString(36).substr(2, 5);
+    
 
 module.exports = router;
 

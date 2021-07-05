@@ -161,7 +161,7 @@ router.get('/:id', (req, res) => {
 router.put('/:id', (req, res, next) => {
     trainSchema.findByIdAndUpdate({
         _id: req.params.id
-    }, req.body).then((reposnse) =>
+    }, req.body).then((response) =>
         res.send(response)).catch((err) => console.log(err));
     res.send(req.body);
 });
@@ -183,7 +183,7 @@ router.put('/:id', (req, res, next) => {
 
 //Find By ID & Delete
  router.delete('/:id', function(req, res) {
-    trains.findByIdAndDelete(req.params.id).then(() => {
+    trainSchema.findByIdAndDelete(req.params.id).then(() => {
         res.send('Train deleted')
 
     }).catch(err => {

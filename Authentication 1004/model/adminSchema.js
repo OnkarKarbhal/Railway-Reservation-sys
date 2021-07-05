@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-const userSchema = new mongoose.Schema({
+const adminSchema = new mongoose.Schema({
     
     name:{
         type: String,
@@ -24,21 +24,16 @@ const userSchema = new mongoose.Schema({
 
     usertype:{
         type: String,
-        Boolean: false
-    },
-
-    date:{
-        type: Date,
-        default: Date.now,
-        required: true
+        Boolean: true
     }
+
 })
 
-userSchema.pre('save', async function (next){
+adminSchema.pre('save', async function (next){
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
     next();
 });
 
-module.exports = mongoose.model('user', userSchema);
+module.exports = mongoose.model('adminDB', adminSchema);
 
