@@ -23,8 +23,8 @@ const adminSchema = new mongoose.Schema({
     },
 
     usertype:{
-        type: String,
-        Boolean: true
+        type: Boolean,
+        default: true
     }
 
 })

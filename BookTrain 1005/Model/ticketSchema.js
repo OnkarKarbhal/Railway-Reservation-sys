@@ -13,13 +13,13 @@ var ticket = new mongoose.Schema({
 
     seatsQuantity:{
         type: Number,
-        required: true
+        //required: true
     },
 
     date:{
         type: Date,
         default: Date.now,
-        required: true
+        //required: true
     }
 });
 

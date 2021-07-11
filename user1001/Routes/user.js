@@ -76,15 +76,21 @@ router.get("/", (req, res) => {
 //PUT user data
 router.put("/:id", (req, res) => {
   console.log(req.params.id, req.body);
-  UserSchema.findByIdAndUpdate({ _id: req.params.id }, req.body).then(() => {
+  UserSchema.findByIdAndUpdate({ _id: req.params.id }, req.body).then((response) => {
     UserSchema.findOne({ _id: req.params.id })
-      .then((user) => {
-        res.send(user);
-      })
+        res.send(response)})
       .catch((err) => {
         res.json({ message: err.message });
       });
   });
-});
+
+//Delete user data
+router.delete("/:id", (req, res) => {
+  console.log(req.params.id, req.body);
+  UserSchema.findByIdAndDelete({ _id: req.params.id }, req.body).then((response) => {
+    res.send(response)}).catch((err) => {
+        res.json({ message: err.message });
+      });
+  });
 
 module.exports = router;

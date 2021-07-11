@@ -1,7 +1,10 @@
 var express = require('express');
 var mongoose = require('mongoose');
+var jwt = require('jsonwebtoken');
 var router = express.Router();
 var trainSchema = require('../Model/TrainSchema');
+var authMiddle = require('../../Middleware/authmiddleware');
+
 
 router.use(express.json());
 
@@ -50,7 +53,7 @@ console.log('TrainDB connected');
  *              description: A successful response
  */
 
-router.get('/', function (req, res) {
+router.get('/', (req, res)=>{
     trainSchema.find().then((trainSchema) => {
         res.json(trainSchema)
     }).catch(err => {
@@ -81,17 +84,17 @@ router.get('/', function (req, res) {
 
 
 //Update New Train
-router.post('/post-train-details', (req, res) => {
-    trainSchema.create(req.body).then((newTrain) => {
-        res.send(newTrain)
-    }).catch(err => {
-        if (err) {
-            throw err;
-        } else {
-            res.status(200).send("error")
-        }
-    });
-});
+router.post('/post-train-details', authMiddle, (req, res) => {
+        trainSchema.create(req.body).then((newTrain) => {
+            res.send(newTrain)
+        }).catch(err => {
+            if (err) {
+                throw err;
+            } else {
+                res.status(200).send("error")
+            }
+        });
+    })
 
 
 //Find Train By Name
@@ -158,7 +161,7 @@ router.get('/:id', (req, res) => {
 
 
 //Find By ID & Update
-router.put('/:id', (req, res, next) => {
+router.put('/:id', authMiddle, (req, res, next) => {
     trainSchema.findByIdAndUpdate({
         _id: req.params.id
     }, req.body).then((response) =>
@@ -182,7 +185,7 @@ router.put('/:id', (req, res, next) => {
  */
 
 //Find By ID & Delete
- router.delete('/:id', function(req, res) {
+ router.delete('/:id', authMiddle, function(req, res) {
     trainSchema.findByIdAndDelete(req.params.id).then(() => {
         res.send('Train deleted')
 

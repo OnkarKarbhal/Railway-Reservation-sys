@@ -1,15 +1,7 @@
 var express = require('express');
-var trains = require('./routes/traindetails');
+var trains = require('./Routes/traindetails')
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
-
-
-var app = express();
-app.use('/admin',trains);
-
-
-
-app.listen(1000, ()=>{console.log("server activated at " + 1000)});
 
 // Extended: http://swagger.io/specification/#infoObject
 const swaggerOptions = {
@@ -24,12 +16,18 @@ const swaggerOptions = {
     servers: ["http://localhost:1000"]
     }
     },
-    apis: ['routes/TrainDetails.js']
+    apis: ['routes/*.js']
     
     };
     
     const swaggerDocs = swaggerJsDoc(swaggerOptions);
-    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+    
 
-    module.exports = app;
+var app = express();
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/admin',trains);
+
+app.listen(1000, ()=>{console.log("server activated at " + 1000)});
+
+module.exports = app;
 

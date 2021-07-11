@@ -26,6 +26,12 @@ mongoose.connect(dbURI, {
 });
 console.log("DB Connected!");
 
+//function 
+const maxAge = 1 * 24 * 60 * 60;
+const createToken = (id, userType) => {
+   return jwt.sign({ id, userType }, 'OnkarK', { expiresIn: maxAge })
+}
+
          
 
 /**
@@ -62,14 +68,6 @@ router.post("/register", async (req, res) => {
 });
 
 
-//JWT token 
-const maxAge = 3 * 24 * 60 * 60
-const createToken = (id) => {
-    return jwt.sign({ id }, 'OnkarK', {
-        expiresIn: maxAge
-    })
-}
-
 /**
  * @swagger
  * /login:
@@ -103,9 +101,30 @@ router.post("/login", async (req, res) => {
   res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
   console.log(token);
 
-  res.send("Login successful");
+  res.send("User Login successful");
 });
 
+//Admin login
+router.post("/admin-login", async (req, res) => {
+
+  //Validate
+  const { error } = loginschema.validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
+  //Check for exisiting Email ID
+  const emailExist = await Admin.findOne({ email: req.body.email });
+  if (!emailExist) return res.status(400).send({ message: " Email does not exist!" });
+  //res.json({ userid: emailExist._id });
+  console.log(emailExist);
+
+  //Create token and auth
+  //const token = createToken(emailExist._id, emailExist.usertype)
+  const token = createToken(Admin._id)
+  res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
+  console.log('admin-token: '+token);
+
+  res.send("Admin Login successful");
+});
 
 // Add new Admin - register
 router.post('/admin-register', async (req, res) => {
@@ -124,25 +143,7 @@ router.post('/admin-register', async (req, res) => {
     });
 });
 
-//Admin login
-router.post("/admin-login", async (req, res) => {
 
-  //Validate
-  const { error } = loginschema.validate(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-
-  //Check for exisiting Email ID
-  const emailExist = await User.findOne({ email: req.body.email });
-  if (!emailExist) return res.status(400).send({ message: " Email does not exist!" });
-  //res.json({ userid: emailExist._id });
-
-  //Create token and auth
-  const token = createToken(Admin._id, usertype.Admin)
-  res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 })
-  console.log(token);
-
-  res.send("Login successful");
-});
 
 
 module.exports = router;
